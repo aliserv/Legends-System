@@ -28,7 +28,7 @@ client.on('message', message => {
     if(!message.channel.guild) return message.channel.send('**:no_entry: | هذا الأمر للسيرفرات فقط**').then(m => m.delete(5000));
   if(!message.member.hasPermission('ADMINISTRATOR')) return      message.channel.send('**للقيام بعمل برودكاست `ADMINISTRATOR` لاتملك صلاحيات**').then(m => m.delete(5000));
     let args = message.content.split(" ").join(" ").slice(2 + prefix.length);
-    let copy = "Broadcast Bot";
+    let copy = "- Legends System Bot";
     let request = `Requested By ${message.author.username}`;
     if (!args) return message.reply('**يجب عليك كتابة شيئاً لأرسال البرودكاست**').then(m => m.delete(5000));
     message.channel.send(`**هل أنت متأكد من ارسال البرودكاست ؟ \n محتوى البرودكاست :** \` ${args}\``).then(msg => {
@@ -98,7 +98,7 @@ client.on('message', message => {
     if (!devs.includes(message.author.id)) return;
 if (message.content.startsWith(adminprefix + 'playing')) {
   client.user.setGame(argresult)
-    message.channel.sendMessage(`**:white_check_mark: | The Playing Status Has Been Changed To : ${argresult}**`)
+    message.channel.sendMessage(`**:white_check_mark: | The Playing Status Has Been Changed To : ${argresult}**`).then(message => {message.delete(6000)})
 } else 
   if (message.content.startsWith(adminprefix + 'rename')) {
 client.user.setUsername(argresult)
@@ -212,7 +212,7 @@ if(command === `unmute`) {
 
 
   let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
-  if(!toMute) return message.channel.sendMessage("**:thinking: | منشن العضو الذي تريد فك الميوت عنه**").then(m => m.delete(5000));
+  if(!toMute) return message.channel.sendMessage("**:thinking: | منشن العضو الذي تريد اعطاءه الميوت عنه**").then(m => m.delete(5000));
 
   let role = message.guild.roles.find (r => r.name === "muted");
   
@@ -591,7 +591,7 @@ const prefix = '!'
      })
 
 message.channel.sendMessage({embed: new Discord.RichEmbed()
-     .setColor('#502faf').setAuthor(`${message.author.username}'`, message.author.avatarURL).setDescription('***Colors Has Been Created***')});
+     .setColor('#502faf').setAuthor(`${message.author.username}'`, message.author.avatarURL).setDescription('**Colors Has Been Created**')});
     }
 	});
 	client.on('message', async message => {
