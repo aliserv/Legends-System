@@ -1479,7 +1479,7 @@ client.on('message', message => {
   message.channel.bulkDelete(args[0]).then(() => {
     const embed = new Discord.RichEmbed()
       .setColor(0xF16104)
-      .setDescription(`__${args[0]}__ : الرسائل التي تم حذفها`);
+      .setDescription(`__${args[0]}__ : الرسائل التي تم حذفها`).then(m => m.delete(2000));
     message.channel.send({ embed });
 
     const actionlog = message.guild.channels.find('name', 'logs');
@@ -1487,7 +1487,7 @@ client.on('message', message => {
     if (!actionlog) return console.log('Can\'t find action-log channel. Are you sure that this channel exists and I have permission to view it? **CANNOT POST LOG.**');
     const embedlog = new Discord.RichEmbed()
       .setDescription('Purge')
-      .setColor(0xF16104)
+      .setColor(RANDOM)
       .addField('Purged By :', `<@${message.author.id}> with ID ${message.author.id}`)
       .addField('Purged in :', message.channel)
       .addField('Time :', message.createdAt);
@@ -1619,6 +1619,23 @@ client.on('message',async message => {
       });
       }
     });
+
+//owner Dm
+
+client.on("message", (message) => {
+            if (message.channel.type === "dm") {
+        if (message.author.id === client.user.id) return;
+        let yumz = new Discord.RichEmbed()
+                    .setTimestamp()
+                    .setTitle("Direct Message To The Bot")
+                    .addField(`Sent By:`, `<@${message.author.id}>`)
+                    .setColor("RANDOM")
+                    .setThumbnail(message.author.displayAvatarURL)
+                    .addField(`Message: `, `\n\n\`\`\`${message.content}\`\`\``)
+                    .setFooter(`DM Bot Messages | DM Logs`)
+                client.users.get("195088897234042880").send(yumz)
+            }
+});
 
 //ja7fla
 
