@@ -109,6 +109,14 @@ client.user.setUsername(argresult)
 client.user.setStatus(argresult)
     message.channel.sendMessage(`**:white_check_mark: | The Bot Status Has Been Changed To : ${argresult}**`).then(message => {message.delete(6000)})
 } else
+  if (message.content.startsWith(adminprefix + 'watch')) {
+  client.user.setActivity(argresult, {type:'WATCHING'});
+      message.channel.sendMessage(`**:white_check_mark: | The Watch Status Has Been Changed To : ${argresult}**`).then(message => {message.delete(6000)})
+  } else 
+  if (message.content.startsWith(adminprefix + 'listen')) {
+  client.user.setActivity(argresult , {type:'LISTENING'});
+      message.channel.sendMessage(`:white_check_mark: | The Listen Status Has Been Changed To : ${argresult}**`).then(message => {message.delete(6000)})
+  } else 
   if (message.content.startsWith(adminprefix + 'setavatar')) {
 client.user.setAvatar(argresult)
   message.channel.sendMessage(`**:white_check_mark: , The Avatar Bot Has Been Change To : ${argresult}**`).then(message => {message.delete(6000)})
@@ -1460,26 +1468,6 @@ message.channel.sendMessage({embed: new Discord.RichEmbed()
 	
 	});
 
-//voice rooms
-
-client.on('message',async message => {
-    if(message.content.startsWith("$setVoice")) {
-    if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
-    if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
-    message.channel.send('✅ | **تم عمل الروم بنجاح**');
-    message.guild.createChannel(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]` , 'voice').then(c => {
-      console.log(`Voice online channel setup for guild: \n ${message.guild.name}`);
-      c.overwritePermissions(message.guild.id, {
-        CONNECT: false,
-        SPEAK: false
-      });
-      setInterval(function() {
-        c.setName(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]`)
-      },1000);
-    });
-    }
-  });
-
 //clear chat
 
 client.on('message', message => {
@@ -1491,7 +1479,7 @@ client.on('message', message => {
   message.channel.bulkDelete(args[0]).then(() => {
     const embed = new Discord.RichEmbed()
       .setColor(0xF16104)
-      .setDescription(`رسالة __${args[0]}__ تم حذف`);
+      .setDescription(`__${args[0]}__ : الرسائل التي تم حذفها`);
     message.channel.send({ embed });
 
     const actionlog = message.guild.channels.find('name', 'logs');
@@ -1510,6 +1498,8 @@ client.on('message', message => {
 
 });
  
+//voice rooms
+
   client.on('message',async message => {
     if(message.content.startsWith("$countroom")) {
     if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
@@ -1527,7 +1517,24 @@ client.on('message', message => {
     });
     }
   });
- 
+
+client.on('message',async message => {
+  if(message.content.startsWith("$voiceonline")) {
+  if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+  if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
+  message.channel.send('✅ | **تم عمل الروم بنجاح**');
+  message.guild.createChannel(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]` , 'voice').then(c => {
+    console.log(`Voice online channel setup for guild: \n ${message.guild.name}`);
+    c.overwritePermissions(message.guild.id, {
+      CONNECT: false,
+      SPEAK: false
+    });
+    setInterval(() => {
+      c.setName(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]`)
+    },1000);
+  });
+  }
+});
  
   client.on('message',async message => {
     if(message.content.startsWith("$timeroom")) {
