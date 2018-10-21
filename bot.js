@@ -1479,8 +1479,8 @@ client.on('message', message => {
   message.channel.bulkDelete(args[0]).then(() => {
     const embed = new Discord.RichEmbed()
       .setColor(0xF16104)
-      .setDescription(`__${args[0]}__ : الرسائل التي تم حذفها`).then(m => m.delete(2000));
-    message.channel.send({ embed });
+      .setDescription(`__${args[0]}__ : الرسائل التي تم حذفها`);
+    message.channel.send({ embed }).then(m => m.delete(2000));
 
     const actionlog = message.guild.channels.find('name', 'logs');
 
