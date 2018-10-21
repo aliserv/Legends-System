@@ -1460,6 +1460,159 @@ message.channel.sendMessage({embed: new Discord.RichEmbed()
 	
 	});
 
+//voice rooms
+
+client.on('message',async message => {
+    if(message.content.startsWith("$setVoice")) {
+    if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+    if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
+    message.channel.send('✅ | **تم عمل الروم بنجاح**');
+    message.guild.createChannel(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]` , 'voice').then(c => {
+      console.log(`Voice online channel setup for guild: \n ${message.guild.name}`);
+      c.overwritePermissions(message.guild.id, {
+        CONNECT: false,
+        SPEAK: false
+      });
+      setInterval(function() {
+        c.setName(`Voice Online : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]`)
+      },1000);
+    });
+    }
+  });
+
+//clear chat
+
+client.on('message', message => {
+     if(message.content.startsWith("$clear")) {
+         var args = message.content.split(" ").slice(1);
+ if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('`MANAGE_MESSAGES` : لاتملك صلاحيات');
+  if (!args[0]) return message.channel.send('الرجاء كتابة عدد الرسائل المطلوب حذفها !');
+
+  message.channel.bulkDelete(args[0]).then(() => {
+    const embed = new Discord.RichEmbed()
+      .setColor(0xF16104)
+      .setDescription(`رسالة __${args[0]}__ تم حذف`);
+    message.channel.send({ embed });
+
+    const actionlog = message.guild.channels.find('name', 'logs');
+
+    if (!actionlog) return console.log('Can\'t find action-log channel. Are you sure that this channel exists and I have permission to view it? **CANNOT POST LOG.**');
+    const embedlog = new Discord.RichEmbed()
+      .setDescription('Purge')
+      .setColor(0xF16104)
+      .addField('Purged By :', `<@${message.author.id}> with ID ${message.author.id}`)
+      .addField('Purged in :', message.channel)
+      .addField('Time :', message.createdAt);
+    actionlog.send(embedlog);
+   
+  });
+};
+
+});
+ 
+  client.on('message',async message => {
+    if(message.content.startsWith("$countroom")) {
+    if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+    if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
+    message.channel.send('✅ | **تم عمل الروم بنجاح**');
+    message.guild.createChannel(`Members Count : [ ${message.guild.members.size} ]` , 'voice').then(c => {
+      console.log(`Count Members channel setup for guild: \n ${message.guild.name}`);
+      c.overwritePermissions(message.guild.id, {
+        CONNECT: false,
+        SPEAK: false
+      });
+      setInterval(function() {
+        c.setName(`Members Count : [ ${message.guild.members.size} ]`)
+      },1000);
+    });
+    }
+  });
+ 
+ 
+  client.on('message',async message => {
+    if(message.content.startsWith("$timeroom")) {
+    if(!message.guild.member(message.author).hasPermission('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+    if(!message.guild.member(client.user).hasPermission(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
+    message.channel.send('✅ | **تم عمل الروم بنجاح**');
+    message.guild.createChannel("🕐 - Time  00", 'voice').then((c) => {
+      console.log(`Time channel setup for guild: \n ${message.guild.name}`);
+      c.overwritePermissions(message.guild.id, {
+        CONNECT: false,
+        SPEAK: false
+      });
+          setInterval(function() {
+ 
+        var currentTime = new Date(),
+        hours = currentTime.getHours() + 3 ,
+        minutes = currentTime.getMinutes(),
+        seconds = currentTime.getSeconds(),
+        years = currentTime.getFullYear(),
+        month = currentTime.getMonth(),
+        day = currentTime.getDate(),
+        week = currentTime.getDay();
+ 
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        var suffix = "AM";
+        if (hours >= 12) {
+            suffix = "PM";
+            hours = hours - 12;
+        }
+        if (hours == 0) {
+            hours = 12;
+        }
+ 
+        c.setName("🕐 - Time   「" + hours + ":" + minutes  +" " + suffix + "」");
+      },1000);
+    });
+    }
+  });
+ 
+ 
+ 
+  client.on('message',async message => {
+    if(message.content.startsWith("$dateroom")) {
+        var currentTime = new Date(),
+        years = currentTime.getFullYear(),
+        month = currentTime.getMonth() + 1,
+        day = currentTime.getDate(),
+        week = currentTime.getDay();
+    if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+    if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر*');
+    message.channel.send('✅ | **تم عمل الروم بنجاح**');
+    message.guild.createChannel("📅 - Date " + "「" + day + "-" + month + "-" + years + "」" , 'voice').then(c => {
+      console.log(`Date channel setup for guild: \n ${message.guild.name}`);
+      c.overwritePermissions(message.guild.id, {
+        CONNECT: false,
+        SPEAK: false
+      });
+      setInterval(function() {
+        c.setName("📅 - Date " + "「" + day + "-" + month + "-" + years + "」")
+      },1000);
+    });
+    }
+  });
+ 
+  client.on('message',async message => {
+    var moment = require('moment');
+      if(message.content.startsWith(prefix + "$daysroom")) {
+      if(!message.guild.member(message.author).hasPermissions('MANAGE_CHANNELS')) return message.reply('❌ | **ليس لديك الصلاحيات للقيام بهذا الامر**');
+      if(!message.guild.member(client.user).hasPermissions(['MANAGE_CHANNELS','MANAGE_ROLES_OR_PERMISSIONS'])) return message.reply('❌ | **البوت لايملك صلاحيات للقيام بهذا الامر**');
+      message.channel.send('✅ | **تم عمل الروم بنجاح**');
+      message.guild.createChannel(`Day : ${moment().format('dddd')}` , 'voice').then(c => {
+        console.log(`Day channel setup for guild: \n ${message.guild.name}`);
+        c.overwritePermissions(message.guild.id, {
+          CONNECT: false,
+          SPEAK: false
+        });
+        setInterval(function() {
+          c.setName(`📅 - Day : 「${moment().format('dddd')}」`);
+        },1000);
+      });
+      }
+    });
+
 //ja7fla
 
 let bane = JSON.parse(fs.readFileSync("./alpha.json", "utf8"));
