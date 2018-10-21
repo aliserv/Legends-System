@@ -153,7 +153,7 @@ client.on('message', message => {
 
 client.on('message', async message => {
   let args = message.content.split(" ");
-  if(message.content.startsWith(prefix + "mute")) {
+  if(message.content.startsWith("$mute")) {
     if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
@@ -238,7 +238,7 @@ client.on('message', async message => {
 let command = message.content.split(" ")[0];
      command = command.slice(prefix.length);
     let args = message.content.split(" ").slice(1);
-if(command === `unmute`) {2
+if(command === `$unmute`) {2
   if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.sendMessage("**:unamused: | `Mute_Members` : انت لاتملك صلاحيات**").then(m => m.delete(5000));
 if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return message.reply("**:robot: | `Mute_Members` : لايملك البوت صلاحيات**").then(msg => msg.delete(6000))
  
