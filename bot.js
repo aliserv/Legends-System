@@ -16,7 +16,7 @@ client.on('guildMemberAdd', member => {
     const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
     const inviter = client.users.get(invite.inviter.id);
     const stewart = member.guild.channels.find("name", "legends");
-     stewart.send(`**<@${member.user.id}> Invited By : <@${inviter.id}>**`);
+     stewart.send(`**Invited By : <@${inviter.id}>**`);
   }); 
 });
 
@@ -1487,7 +1487,7 @@ client.on('message', message => {
     if (!actionlog) return console.log('Can\'t find action-log channel. Are you sure that this channel exists and I have permission to view it? **CANNOT POST LOG.**');
     const embedlog = new Discord.RichEmbed()
       .setDescription('Purge')
-      .setColor(RANDOM)
+      .setColor('RANDOM')
       .addField('Purged By :', `<@${message.author.id}> with ID ${message.author.id}`)
       .addField('Purged in :', message.channel)
       .addField('Time :', message.createdAt);
