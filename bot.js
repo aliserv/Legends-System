@@ -65,6 +65,8 @@ client.on('message', message => {
     });
 //تقديم
 
+//تقديم
+
 client.on('message', async message => {
   if(message.content.startsWith(prefix + "تقديم")) {
     await message.channel.send("**قم بكتابة اسمك**").then(e => {
@@ -124,7 +126,11 @@ gg.send({embed : new Discord.RichEmbed()
 })
 })
  }
-})
+});
+	}
+	});
+  }
+}
 
 //anti ads
 
