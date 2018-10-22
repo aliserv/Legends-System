@@ -16,7 +16,7 @@ client.on('guildMemberAdd', member => {
     const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
     const inviter = client.users.get(invite.inviter.id);
     const stewart = member.guild.channels.find("name", "legends");
-     stewart.send(`**Invited By : <@${inviter.id}>**`);
+     stewart.send(`**Invited By : <@${inviter.id}>.**`);
   }); 
 });
 
