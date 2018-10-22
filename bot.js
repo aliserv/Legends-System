@@ -43,7 +43,7 @@ client.on("guildMemberAdd", (member) => {
             var Inv = Invite.code;
             if (dat[Inv])
                 if (dat[Inv] < Invite.uses) {
- channel.send(`**${Invite.inviter} : تم دعوته بواسطة♥`)            
+ channel.send(`**${Invite.inviter} : تم دعوته بواسطة ♥**`)            
  }
             dat[Inv] = Invite.uses;
         })
