@@ -262,23 +262,34 @@ client.on('message', message => {
    **
 [❖═════الاوامر العامة═════❖]
 	   
-❖ -avatar ➾ يعرض لك صورتك او صورة الشخص الي تمنشنه
+❖ $avatar ➾ يعرض لك صورتك او صورة الشخص الي تمنشنه
   
-❖ -link ➾ يعطيك رابط الانفايت الخاص بالسيرفر
+❖ $link ➾ يعطيك رابط الانفايت الخاص بالسيرفر
   
 [❖═════الاوامر الادارية═════❖]
 	   
-❖ -ban <mention> ➾ لأعطاء باند لشخص
+❖ $ban <mention> ➾ لأعطاء باند لشخص
   
-❖ -kick <mention> ➾ لأعطاء طرد لشخص
+❖ $bans ➾ لرؤية عدد الباندات الموجودة في السيرفر
+
+❖ $kick <mention> ➾ لأعطاء طرد لشخص
   
-❖ -clear <number> ➾ لمسح الشات مع العدد
+❖ $clear <number> ➾ لمسح الشات مع العدد
   
-❖ -mute <mention> ➾ لأعطاء ميوت لشخص
+❖ $mute <mention> ➾ لأعطاء ميوت لشخص
 **`);
   
       }
   });
+
+//bans
+
+client.on('message', message => {
+    if (message.content.startsWith("$bans")) {
+        message.guild.fetchBans()
+        .then(bans => message.channel.send(`**The Members Banned From The Server is :** **[** ${bans.size} **]**`)).catch(console.error).then(message => {message.delete(5000)});
+}
+});
 
 //server
 
