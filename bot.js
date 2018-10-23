@@ -301,6 +301,32 @@ client.on('message', function(msg) {
     }
   });
 
+//avatar
+
+client.on('message', message =>{
+    let args = message.content.split(' ');
+    let prefix = '$';
+    
+    if(args[0] === `${prefix}avatar`){
+        let mentions = message.mentions.members.first()
+        if(!mentions) {
+          let sicon = message.author.avatarURL
+          let embed = new Discord.RichEmbed()
+          .setImage(message.author.avatarURL)
+          .setColor("RANDOM") 
+          .setDescription(`**${message.author.username}#${message.author.discriminator}** Avatar :`);
+          message.channel.send({embed})
+        } else {
+          let sicon = mentions.user.avatarURL
+          let embed = new Discord.RichEmbed()
+          .setColor("RANDOM")
+          .setDescription(`**${mentions.user.username}#${mentions.user.discriminator}** Avatar :`)
+          .setImage(sicon)
+          message.channel.send({embed})
+        }
+    };
+});
+
 //ban members
 
 var prefix = "$"
