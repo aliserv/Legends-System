@@ -403,24 +403,46 @@ client.on('message', message => {
 
 //server
 
-client.on('message', function(msg) {
-    const prefix = '$'
-    if(msg.content.startsWith ('$server')) {
-      let embed = new Discord.RichEmbed()
-	  .setAuthor(`Server Details : ( ${msg.guild.name} )`)
-      .setColor('black')
-	  .setTitle(`=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=`)
-	  .addField(':id:** Server ID :**',`**${msg.guild.id}**`,true)
-	  .addField(':calendar:** Created On :**',msg.guild.createdAt.toLocaleString())
-	  .addField(':crown:** Owned by :**',`**${msg.guild.owner}**`,true)
-      .addField(':closed_lock_with_key:** Roles :**',`** __${msg.guild.roles.size}__ **`,true)
-      .addField(':busts_in_silhouette:** Members :**',`[** __${msg.guild.memberCount}__ **]`,true)
-      .addField(':pencil:** Text Channels :**',`[** __${msg.guild.channels.filter(m => m.type === 'text').size}__** ]`,true)
-      .addField(':microphone:** Voice Channels :**',`[** __${msg.guild.channels.filter(m => m.type === 'voice').size}__ **]`,true)
-	  .addField(':earth_asia:** Region :**',`${msg.guild.region}`,true)
-      msg.channel.send({embed:embed});
-    }
-  });
+client.on("message", msg => {
+var prefix = '$';
+var m = msg.guild.name
+var d = msg.guild.memberCount
+var p = msg.guild.roles.size
+var c = msg.guild.channels.size
+var l = msg.guild.region
+var o = msg.guild.iconURL
+var k = msg.guild.owner
+var i = msg.guild.emojis.size
+var b = msg.guild.members.filter(m => m.user.bot).size
+var h = d - b
+var cre = `${moment(msg.guild.createdAt).format('D/M/YYYY h:mm a')} **\n** \`${moment(msg.guild.createdAt).fromNow()}\``
+var t = msg.guild.channels.filter(e => e.type === "text")
+var v = msg.guild.channels.filter(e => e.type === "voice")
+var pow = msg.guild.verificationLevel
+var e = msg.guild.emojis.size
+var e2 = msg.guild.emojis.array()
+var afk = msg.guild.afkChannel
+var ID = msg.guild.id
+if (msg.content.startsWith(prefix + "server")){
+var embed = new Discord.RichEmbed()
+.setColor("RANDOM")
+.setThumbnail(o)
+.addField("👑**رئيس السيرفر**👑⤵", k, true)
+.addField("📜**اسم السيرفر**📜⤵", m, true)
+.addField("🆔**ايدي السيرفر**🆔⤵", ID, true)
+.addField("👥**كل الاعضاء**🤖⤵", d, true)
+.addField("📕**الرتب**📕⤵", p, true)
+.addField("📕**القنوات**📕⤵", c, true)
+.addField("🌐**نوع السيرفر**🌐⤵", l, true)
+.addField("🤖**البوتات**🤖⤵", b, true)
+.addField("👥**الاشخاص**👥⤵", h, true)
+.addField("📝**الرومات الكتابيه**📝⤵", `${t.size}`, true)
+.addField("🔒**مستوى حماية السيرفر**🔒⤵", pow, true)
+.addField("🎤**الرومات الصوية**🎤⤵", `${v.size}`, true)
+.addField("📆**تم انشاء السيرفر في**📆⤵", cre,true)
+msg.channel.sendEmbed(embed);
+}
+});
 
 //avatar
 
