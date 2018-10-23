@@ -50,49 +50,6 @@ client.on("guildMemberAdd", (member) => {
     })
 });
 
-//broadcast
-
-client.on('message', message => {
-        var prefix = "$";
-              if(!message.channel.guild) return;
-    if(message.content.startsWith(prefix + 'bc')) {
-    if(!message.channel.guild) return message.channel.send('**:no_entry: | هذا الأمر للسيرفرات فقط**').then(m => m.delete(5000));
-  if(!message.member.hasPermission('ADMINISTRATOR')) return      message.channel.send('**للقيام بعمل برودكاست `ADMINISTRATOR` لاتملك صلاحيات**').then(m => m.delete(5000));
-    let args = message.content.split(" ").join(" ").slice(2 + prefix.length);
-    let copy = "- Legends System Bot";
-    let request = `Requested By ${message.author.username}`;
-    if (!args) return message.reply('**يجب عليك كتابة شيئاً لأرسال البرودكاست**').then(m => m.delete(5000));
-    message.channel.send(`**هل أنت متأكد من ارسال البرودكاست ؟ \n محتوى البرودكاست :** \` ${args}\``).then(msg => {
-    msg.react('✅')
-    .then(() => msg.react('❌'))
-    .then(() =>msg.react('✅'))
-    
-    let reaction1Filter = (reaction, user) => reaction.emoji.name === '✅' && user.id === message.author.id;
-    let reaction2Filter = (reaction, user) => reaction.emoji.name === '❌' && user.id === message.author.id;
-    
-    let reaction1 = msg.createReactionCollector(reaction1Filter, { time: 12000 });
-    let reaction2 = msg.createReactionCollector(reaction2Filter, { time: 12000 });
- reaction1.on("collect", r => {
-    message.channel.send(`**☑ | عضو __${message.guild.members.size}__ تم ارسأل البرودكاست بنجاح الى**`).then(m => m.delete(5000));
-    message.guild.members.forEach(m => {
- var bc = new
-       Discord.RichEmbed()
-       .setColor('RANDOM')
-       .addField(':pencil: المرسل :', message.author.username)
-       .addField(':globe_with_meridians: السيرفر :', message.guild.name)
-       .addField(':scroll: الرسالة :', args)
-       .setFooter(copy, client.user.avatarURL);
-    m.send({ embed: bc })
-    msg.delete();
-    })
-    })
-    reaction2.on("collect", r => {
-    message.channel.send(`**تم ألغاء ارسال البرودكاست.**`).then(m => m.delete(5000));
-    msg.delete();
-    })
-    })
-    }
-    });
 
 //anti ads
 
@@ -187,11 +144,9 @@ client.on('message', message => {
     }
 });
 
-//mute
-
 client.on('message', async message => {
   let args = message.content.split(" ");
-  if(message.content.startsWith("$mute")) {
+  if(message.content.startsWith(prefix + "$mute")) {
     if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
@@ -207,29 +162,28 @@ client.on('message', async message => {
       msg.delete(3500);
       message.delete(3500);
     });
+   
+   
+    if(mention.hasPermission('ADMINISTRATOR')) return message.channel.send(`**:x: | This Command Only For Servers.**`);
  
-    if(mention.id === message.author.id) return message.channel.send('**:x: | لايمكنك ان تعطي لنفسك ميوت**').then(msg => {
+    if(message.guild.member(mention).roles.find('name', 'Muted')) return message.channel.send(`**:information_source: | ${mention.user.username} Already muted! **`);
+ 
+       
+    if(mention.position >= message.guild.member(message.author).positon) return message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
     });
-   
-    if(mention.hasPermission('ADMINISTRATOR')) return message.channel.send(`**:x: | لا يمكن آعطاء ميوت لادارة السيرفر**`);
- 
-    if(message.guild.member(mention).roles.find('name', 'Muted')) return message.channel.send(`**:information_source: | مسبقاً ${mention.user.username}تم اعطاء ميوت لـ**`);
- 
-   
-    if(mention.position >= message.guild.member(message.author).positon) return message.channel.send('**:unamused: | `Mute_Members` : انت لاتملك صلاحيات**`').then(msg => {
+    if(mention.positon >= message.guild.member(client.user).positon) return message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
     });
-   
-    if(mention.positon >= message.guild.member(client.user).positon) return message.channel.send(':robot: | `Muted_Members` : البوت لايملك صلاحيات').then(msg => {
+    if(mention.id === message.author.id) return message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
     });
-   
+ 
     let duration = args[2];
-    if(!duration) message.channel.send(`**:hash: You Can Use ${prefix}mute @user Time Reason**`).then(msg => {
+    if(!duration)  message.channel.send('').then(msg => {
       msg.delete(3500);
       message.delete(3500);
     });
@@ -240,7 +194,7 @@ client.on('message', async message => {
     });
  
     let reason = message.content.split(" ").slice(3).join(" ");
-    if(!reason) reason = " [ **لم يذكر أي سبب** ] ";
+    if(!reason) reason = "No Reason Given.";
  
     let role = message.guild.roles.find('name', 'Muted') || message.guild.roles.get(r => r.name === 'Muted');
     if(!role) try {
@@ -261,7 +215,7 @@ client.on('message', async message => {
     }
     mention.addRole(role).then(() => {
       mention.send(thisEmbed);
-      message.channel.send(`**:white_check_mark: | بنجاح ${mention.user.username}تم اعطاء ميوت لـ!**  `);
+      message.channel.send(`**:white_check_mark: | ${mention.user.username} Muted Successfully!**`);
       mention.setMute(true);
     });
     setTimeout(() => {
@@ -277,26 +231,136 @@ let command = message.content.split(" ")[0];
      command = command.slice(prefix.length);
     let args = message.content.split(" ").slice(1);
 if(command === `$unmute`) {2
-  if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.sendMessage("**:unamused: | `Mute_Members` : انت لاتملك صلاحيات**").then(m => m.delete(5000));
-if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return message.reply("**:robot: | `Mute_Members` : لايملك البوت صلاحيات**").then(msg => msg.delete(6000))
+  if(!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.sendMessage("").then(m => m.delete(5000));
+if(!message.guild.member(client.user).hasPermission("MUTE_MEMBERS")) return message.channel.send("").then(msg => msg.delete(6000))
  
-  let kinggamer = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
-     if(!kinggamer) return message.channel.send('').then(msg => {
-      msg.delete(6000);
-      message.delete(6000);
-    });
+  let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+  if(!toMute) return message.channel.sendMessage("");
  
   let role = message.guild.roles.find (r => r.name === "Muted");
  
-  if(!role || !kinggamer.roles.has(role.id)) return message.channel.sendMessage(`**:information_source: | مسبقاً ${mention.user.username} لقد تم فك الميوت عن هذا الشخص**`)
+  if(!role || !toMute.roles.has(role.id)) return message.channel.sendMessage(`**:information_source: | This Member ${mention.user.username} Has Been unMuted Previously.**`)
  
-  await kinggamer.removeRole(role)
-  message.channel.sendMessage(`**:white_check_mark: | ${mention.user.username} تم فك الميوت عن!**`);
+  await toMute.removeRole(role)
+  message.channel.sendMessage(`**:white_check_mark: | ${mention.user.username} Unmuted!**`);
  
   return;
  
   }
  
+});
+
+//help
+
+client.on('message', message => {
+      if (message.author.bot) return;
+      var prefix ="$"
+       if (message.content === prefix + "help") {
+       message.channel.send('**:white_check_mark: | The help message Has been sent to you in DM**');
+	   
+   message.author.sendMessage(`
+   **
+[❖═════الاوامر العامة═════❖]
+	   
+❖ -avatar ➾ يعرض لك صورتك او صورة الشخص الي تمنشنه
+  
+❖ -link ➾ يعطيك رابط الانفايت الخاص بالسيرفر
+  
+[❖═════الاوامر الادارية═════❖]
+	   
+❖ -ban <mention> ➾ لأعطاء باند لشخص
+  
+❖ -kick <mention> ➾ لأعطاء طرد لشخص
+  
+❖ -clear <number> ➾ لمسح الشات مع العدد
+  
+❖ -mute <mention> ➾ لأعطاء ميوت لشخص
+**`);
+  
+      }
+  });
+
+//server
+
+client.on('message', function(msg) {
+    const prefix = '$'
+    if(msg.content.startsWith ('$server')) {
+      let embed = new Discord.RichEmbed()
+	  .setAuthor(`Server Details : ( ${msg.guild.name} )`)
+      .setColor('black')
+	  .setTitle(`=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=`)
+	  .addField(':id:** Server ID :**',`**${msg.guild.id}**`,true)
+	  .addField(':calendar:** Created On :**',msg.guild.createdAt.toLocaleString())
+	  .addField(':crown:** Owned by :**',`**${msg.guild.owner}**`,true)
+      .addField(':closed_lock_with_key:** Roles :**',`** __${msg.guild.roles.size}__ **`,true)
+      .addField(':busts_in_silhouette:** Members :**',`[** __${msg.guild.memberCount}__ **]`,true)
+      .addField(':pencil:** Text Channels :**',`[** __${msg.guild.channels.filter(m => m.type === 'text').size}__** ]`,true)
+      .addField(':microphone:** Voice Channels :**',`[** __${msg.guild.channels.filter(m => m.type === 'voice').size}__ **]`,true)
+	  .addField(':earth_asia:** Region :**',`${msg.guild.region}`,true)
+      msg.channel.send({embed:embed});
+    }
+  });
+
+//ban members
+
+var prefix = "$"
+
+client.on('message', message => {
+
+  if (message.author.x5bz) return;
+
+  if (!message.content.startsWith(prefix)) return;
+
+ 
+
+  let command = message.content.split(" ")[0];
+
+  command = command.slice(prefix.length);
+
+ 
+
+  let args = message.content.split(" ").slice(1);
+
+ 
+
+  if (command == "ban") {
+
+               if(!message.channel.guild) return message.channel.send('');
+
+         
+
+  if(!message.guild.member(message.author).hasPermission("BAN_MEMBERS")) return message.channel.send("");
+
+  if(!message.guild.member(client.user).hasPermission("BAN_MEMBERS")) return message.channel.send("");
+
+  let user = message.mentions.users.first();
+
+  let reason = message.content.split(" ").slice(2).join(" ");
+
+  if (message.mentions.users.size < 1) return message.channel.send("");
+
+  if (!message.guild.member(user)
+
+  .bannable) return message.channel.send("**:x: | لأيمكنك اعطاء باند الى ادارة السيرفر !**").then(message => {message.delete(4000)})
+
+ 
+
+  message.guild.member(user).ban(7, user);
+
+ 
+
+  const banembed = new Discord.RichEmbed()
+
+ let mention = message.mentions.members.first();
+ 
+  message.channel.send(`**✅ | ${mention.user.username} تم طرده من السيرفر ! ✈**`)
+setTimeout(() => {
+    embed : banembed
+
+  })
+
+}
+
 });
 
 //colors
