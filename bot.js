@@ -415,7 +415,6 @@ var k = msg.guild.owner
 var i = msg.guild.emojis.size
 var b = msg.guild.members.filter(m => m.user.bot).size
 var h = d - b
-var cre = `${moment(msg.guild.createdAt).format('D/M/YYYY h:mm a')} **\n** \`${moment(msg.guild.createdAt).fromNow()}\``
 var t = msg.guild.channels.filter(e => e.type === "text")
 var v = msg.guild.channels.filter(e => e.type === "voice")
 var pow = msg.guild.verificationLevel
@@ -439,7 +438,6 @@ var embed = new Discord.RichEmbed()
 .addField("📝**الرومات الكتابيه**📝⤵", `${t.size}`, true)
 .addField("🔒**مستوى حماية السيرفر**🔒⤵", pow, true)
 .addField("🎤**الرومات الصوية**🎤⤵", `${v.size}`, true)
-.addField("📆**تم انشاء السيرفر في**📆⤵", cre,true)
 msg.channel.sendEmbed(embed);
 }
 });
