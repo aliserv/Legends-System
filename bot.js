@@ -50,11 +50,6 @@ client.on("guildMemberAdd", (member) => {
     })
 });
 
-client.on('message', message => {
-	const Allwai =['ولكم']
-	message.replay('**WELCOME TO ĹÊĜÊŇĎŜ SERVER  :beers::rose:**');
-});
-
 //anti ads
 
 client.on('message', message => {
