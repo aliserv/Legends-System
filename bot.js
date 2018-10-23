@@ -290,47 +290,6 @@ client.on('message', message => {
 }
 });
 
-//server
-
-client.on("message", msg => {
-var prefix = '$';
-var m = msg.guild.name
-var d = msg.guild.memberCount
-var p = msg.guild.roles.size
-var c = msg.guild.channels.size
-var l = msg.guild.region
-var o = msg.guild.iconURL
-var k = msg.guild.owner
-var i = msg.guild.emojis.size
-var b = msg.guild.members.filter(m => m.user.bot).size
-var h = d - b
-var t = msg.guild.channels.filter(e => e.type === "text")
-var v = msg.guild.channels.filter(e => e.type === "voice")
-var pow = msg.guild.verificationLevel
-var e = msg.guild.emojis.size
-var e2 = msg.guild.emojis.array()
-var afk = msg.guild.afkChannel
-var ID = msg.guild.id
-if (msg.content.startsWith(prefix + "server")){
-var embed = new Discord.RichEmbed()
-.setColor("RANDOM")
-.setThumbnail(o)
-.addField("👑**رئيس السيرفر**👑⤵", k, true)
-.addField("📜**اسم السيرفر**📜⤵", m, true)
-.addField("🆔**ايدي السيرفر**🆔⤵", ID, true)
-.addField("👥**كل الاعضاء**🤖⤵", d, true)
-.addField("📕**الرتب**📕⤵", p, true)
-.addField("📕**القنوات**📕⤵", c, true)
-.addField("🌐**نوع السيرفر**🌐⤵", l, true)
-.addField("🤖**البوتات**🤖⤵", b, true)
-.addField("👥**الاشخاص**👥⤵", h, true)
-.addField("📝**الرومات الكتابيه**📝⤵", `${t.size}`, true)
-.addField("🔒**مستوى حماية السيرفر**🔒⤵", pow, true)
-.addField("🎤**الرومات الصوية**🎤⤵", `${v.size}`, true)
-msg.channel.sendEmbed(embed);
-}
-});
-
 //avatar
 
 client.on('message', message =>{
