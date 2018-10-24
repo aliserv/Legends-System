@@ -54,7 +54,7 @@ client.on("guildMemberAdd", (member) => {
 //تقديم
 
 client.on('message', function(message) {
-    if(message.content.startsWith(prefix + "Apply")) {
+    if(message.content.startsWith("$تقديم")) {
         let messageArgs = message.content.split(" ").slice(1).join(" ");
         let messageReason = message.content.split(" ").slice(2).join(" ");
         if(!messageReason) return message.reply("#منشن نفسك مع خبراتك!");
