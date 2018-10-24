@@ -54,10 +54,10 @@ client.on("guildMemberAdd", (member) => {
 //تقديم
 
 client.on('message', function(message) {
-    if(message.content.startsWith(prefix + "تقديم")) {
+    if(message.content.startsWith(prefix + "Apply")) {
         let messageArgs = message.content.split(" ").slice(1).join(" ");
         let messageReason = message.content.split(" ").slice(2).join(" ");
-        if(!messageReason) return message.reply("# منشن نفسك مع خبراتك!");
+        if(!messageReason) return message.reply("#منشن نفسك مع خبراتك!");
     let mUser = message.mentions.users.first();
     if(!mUser) return message.channel.send("Couldn't find user.");
     let Rembed = new Discord.RichEmbed()
@@ -68,21 +68,21 @@ client.on('message', function(message) {
     .addField("# - Reason:",messageReason,true)
     .addField("# - Channel:",message.channel,true)
     .addField("# - Time:",message.createdAt,true)
-    .setFooter('لو ان التقديم فيه مزح راح يتعرض صاحب التقديم لعقوبات")
+    .setFooter("لو ان التقديم فيه مزح راح يتعرض صاحب الابلاغ لقوبات")
 message.channel.send(Rembed)
 message.channel.send("Are you sure you want to send this to the Server owner??").then(msg => {
-    msg.react("white_check_mark")
-    msg.react("x")
-.then(() => msg.react('x'))
-.then(() =>msg.react('white_check_mark'))
-let reaction1Filter = (reaction, user) => reaction.emoji.name === 'white_check_mark' && user.id === message.author.id;
-let reaction2Filter = (reaction, user) => reaction.emoji.name === 'x' && user.id === message.author.id;
+    msg.react(":white_check_mark:")
+    msg.react(":x:")
+.then(() => msg.react(':x:'))
+.then(() =>msg.react(':white_check_mark:'))
+let reaction1Filter = (reaction, user) => reaction.emoji.name === ':white_check_mark:' && user.id === message.author.id;
+let reaction2Filter = (reaction, user) => reaction.emoji.name === ':x:' && user.id === message.author.id;
 
 let reaction1 = msg.createReactionCollector(reaction1Filter, { time: 12000 });
 let reaction2 = msg.createReactionCollector(reaction2Filter, { time: 12000 });
 reaction1.on("collect", r => {
     message.guild.owner.send(Rembed)
-    message.reply("# - Done!");
+    message.reply("# - Done! :sparkler:");
 })
 reaction2.on("collect", r => {
     message.reply("# - Canceled!");
